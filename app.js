@@ -1,18 +1,41 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // app.js
 
 const express = require('express');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
+const bodyParser = require('body-parser');
+const studentRoutes = require('./src/routes/stdreg.routes');
+const adminRoutes = require('./src/routes/adminreg.routes')
+const path = require('path');
 
 
 // Load environment variables from .env file
 dotenv.config();
 
 const app = express();
+app.use(bodyParser.json());
 
 // Connect to MongoDB
 connectDB();
+
+// Routes
+app.use('/api/students', studentRoutes);
+app.use('/api/admins', adminRoutes);
 
 // Use CORS to allow requests from frontend
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
@@ -30,11 +53,28 @@ app.use('/api/adminauth', adminauthRoutes);
 app.use('/api', apiRoutes);
 
 
+const Studentregroutes = require('./src/routes/stdreg.routes');
+app.use('/api/stdreg', Studentregroutes);
+app.use('/api', apiRoutes);
+
+
+const Adminregroutes = require('./src/routes/adminreg.routes');
+app.use('/api/adminreg', Adminregroutes);
+app.use('/api', apiRoutes);
+
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
+
+
+
 
 
 
