@@ -20,8 +20,13 @@ const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
 const bodyParser = require('body-parser');
 const studentRoutes = require('./src/routes/stdreg.routes');
-const adminRoutes = require('./src/routes/adminreg.routes')
+const adminRoutes = require('./src/routes/adminreg.routes');
+const studentRouting = require('./src/routes/student.routes');
+// const authRoutes = require('./routes/auth.routes');
+
 const path = require('path');
+const mongoose = require('mongoose');
+
 
 
 // Load environment variables from .env file
@@ -29,6 +34,7 @@ dotenv.config();
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 // Connect to MongoDB
 connectDB();

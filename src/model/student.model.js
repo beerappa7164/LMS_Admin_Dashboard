@@ -1,3 +1,7 @@
+
+
+
+
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
@@ -5,12 +9,11 @@ const Schema = mongoose.Schema;
 const studentSchema = new Schema({
   firstName: { type: String, required: true, minlength: 4 },
   lastName: { type: String, required: true, minlength: 4 },
-  
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true, minlength: 8 },
-  // originalPassword: { type: String }, // Field to store original password (not recommended for production)
-  phone: { type: Number,  minlength: 10, maxlength: 12 },
-  address: { type: String },
+  originalPassword: { type: String }, // Field to store original password (not recommended for production)
+  phoneNo: { type: String, minlength: 10,  required: true },
+  adress: { type: String },
   role: { type: String, default: 'student' },
   avatar: { type: String, default: 'avatar.webp' },
   enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
@@ -20,12 +23,10 @@ studentSchema.pre('save', async function (next) {
   if (!this.isModified('password')) return next();
 
   try {
-    this.originalPassword = this.password; // Store the original password
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
-  } catch (error) 
-  {
+  } catch (error) {
     return next(error);
   }
 });
