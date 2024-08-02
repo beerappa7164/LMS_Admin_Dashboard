@@ -6,6 +6,7 @@ class StudentRepository extends BaseRepository{
     {
         super(student)
     }
+   
 };
 
 module.exports=StudentRepository;

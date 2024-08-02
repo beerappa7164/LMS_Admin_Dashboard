@@ -70,6 +70,18 @@ class BaseController {
         });
     }
 
+    updatePassword = (req, res) => {
+        const id = req.params.id;
+        const { newPassword } = req.body;
+        this.repo.updatePassword(id, newPassword).then(data => {
+            return this.ok(res, data);
+        }).catch(err => {
+            console.error(err);
+            return this.internalServerError(res, err);
+        });
+    }
+    
+
     deleteById = (req, res) => {
         let id = req.params.id;
         this.repo.deleteById(id).then(data => {

@@ -20,9 +20,17 @@ class BaseRepository {
 
     async update(model) {
         var options = { new: true };
-        var data = await this.collection.findByIdAndUpdate(model._id, model, options);
+        var data = await this.collection.findOneAndUpdate(model._id, model, options);
         return data;
     }
+
+    async updatePassword(id, newPassword) {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        const data = await this.collection.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+        return data;
+    }
+    
 
     async deleteById(id) {
         var data = await this.collection.findByIdAndDelete(id);

@@ -7,12 +7,12 @@ const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const studentSchema = new Schema({
-  firstName: { type: String, required: true, minlength: 4 },
-  lastName: { type: String, required: true, minlength: 4 },
-  email: { type: String, required: true, unique: true, lowercase: true },
-  password: { type: String, required: true, minlength: 8 },
+  firstName: { type: String, minlength: 4 },
+  lastName: { type: String,  minlength: 4 },
+  email: { type: String,  unique: true, lowercase: true },
+  password: { type: String,  minlength: 8 },
   originalPassword: { type: String }, // Field to store original password (not recommended for production)
-  phoneNo: { type: String, minlength: 10,  required: true },
+  phoneNo: { type: String, minlength: 10,  },
   adress: { type: String },
   role: { type: String, default: 'student' },
   avatar: { type: String, default: 'avatar.webp' },
