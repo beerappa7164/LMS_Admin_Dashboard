@@ -31,6 +31,19 @@ studentSchema.pre('save', async function (next) {
   }
 });
 
+studentSchema.pre('findOneAndUpdate', async function(next) {
+  const update = this.getUpdate();
+  if (update.password) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      update.password = await bcrypt.hash(update.password, salt);
+    } catch (err) {
+      return next(err);
+    }
+  }
+  next();
+});
+
 studentSchema.methods.comparePassword = async function (candidatePassword) {
   try {
     return await bcrypt.compare(candidatePassword, this.password);

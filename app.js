@@ -43,6 +43,7 @@ connectDB();
 app.use('/api/students', studentRoutes);
 app.use('/api/admins', adminRoutes);
 
+
 // Use CORS to allow requests from frontend
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 const apiRoutes = require('./src/routes/api.routes');
