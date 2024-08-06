@@ -12,16 +12,12 @@ const courseSchema = new Schema({
   description: { type: String, required: true },
   tabdescription: { type: String, required: true },
   videoUrl: { type: String, required: true },
-  reviews: { type: String, required: true },
+  reviews: { type: String},
   discussion: { type: String, required: true },
   resources: { type: String, required: true },
   videoLinks: { type: [String], required: true },
-  chapters: [
-    {
-      chapterTitle: { type: String, required: true },
-      sections: { type: [String], required: true }
-    }
-  ]
+  cy: { type: String, required: true }
+ 
 }, { versionKey: false, timestamps: true });
 
 const Course = mongoose.model('Course', courseSchema);

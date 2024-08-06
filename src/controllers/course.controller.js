@@ -41,14 +41,14 @@ class CourseController extends BaseController {
         resources,
         paid,
         videoLinks,
-        chapters
+        cy
       } = req.body;
 
       const courseImg = req.file ? `uploads/${req.file.filename}` : '';
 
       try {
        
-        const parsedChapters = JSON.parse(chapters);
+        
         const newCourse = await this.repo.create({
           title,
           author,
@@ -62,7 +62,7 @@ class CourseController extends BaseController {
           resources,
           paid,
           videoLinks: Array.isArray(videoLinks) ? videoLinks : [videoLinks],
-          chapters: Array.isArray(parsedChapters) ? parsedChapters : [parsedChapters]
+         cy
         });
         res.status(201).json(newCourse);
       } catch (error) {
