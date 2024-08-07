@@ -128,7 +128,10 @@ class InstructorController extends BaseController {
 
       const {
         
-        mentorName,
+        firstName,
+        lastName,
+        email,
+        password,
         technologyName,
         ratings,
         location,
@@ -167,7 +170,11 @@ class InstructorController extends BaseController {
       try {
         const newMentors = await this.repo.create({
          
-          mentorName,
+         
+          firstName,
+          lastName,
+          email,
+          password,
           technologyName,
           ratings,
           location,

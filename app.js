@@ -59,26 +59,25 @@ app.use('/api', apiRoutes);
 // Your existing routes and middleware this is for admin login
 const adminauthRoutes = require('./src/routes/adminauth');
 app.use('/api/adminauth', adminauthRoutes);
-app.use('/api', apiRoutes);
+
 
 // Your existing routes and middleware this is for instructor login
 const instructorauthRoutes = require('./src/routes/instructorauth');
 app.use('/api/instructorauth', instructorauthRoutes);
-app.use('/api', apiRoutes);
+
 
 
 const Studentregroutes = require('./src/routes/stdreg.routes');
 app.use('/api/stdreg', Studentregroutes);
-app.use('/api', apiRoutes);
+
 
 
 const Adminregroutes = require('./src/routes/adminreg.routes');
 app.use('/api/adminreg', Adminregroutes);
-app.use('/api', apiRoutes);
 
 const Instructorregroutes = require('./src/routes/instructorreg.routes');
 app.use('/api/instructorreg', Instructorregroutes);
-app.use('/api', apiRoutes);
+
 
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

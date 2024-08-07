@@ -7,37 +7,35 @@
 // const Schema = mongoose.Schema;
 
 // const instructorSchema = new Schema({
-//   firstName: { type: String },
-//   lastName: { type: String },
-//   email: { type: String },
-//   password: { type: String },
-//   phoneNo: { type: String},
-//   adress: { type: String},
-//     mentorName: { type: String },
-//     technologyName: { type: String },
-//     ratings: { type: Number },
-//     location: { type: String },
-//     photoUrl: { type: String },
-//     timings: {
-//       Monday: { type: [String], default: [] },
-//       Tuesday: { type: [String], default: [] },
-//       Wednesday: { type: [String], default: [] },
-//       Thursday: { type: [String], default: [] },
-//       Friday: { type: [String], default: [] },
-//       Saturday: { type: [String], default: [] },
-//       Sunday: { type: [String], default: [] }
-//     },
-//     aboutMe: { type: String},
-//     price: { type: Number },
-//     votes: { type: Number }
-//   }, { versionKey: false, timestamps: true });
+  
+//   mentorfName: { type: String },
+//   mentorlName: { type: String },
+//   mentoremail: { type: String },
+//   mentorpassword: { type: String },
+//   technologyName: { type: String },
+//   ratings: { type: Number, default: 0 },
+//   location: { type: String },
+//   photoUrl: { type: String },
+//   timings: {
+//     Monday: { type: [String], default: [] },
+//     Tuesday: { type: [String], default: [] },
+//     Wednesday: { type: [String], default: [] },
+//     Thursday: { type: [String], default: [] },
+//     Friday: { type: [String], default: [] },
+//     Saturday: { type: [String], default: [] },
+//     Sunday: { type: [String], default: [] }
+//   },
+//   aboutMe: { type: String },
+//   price: { type: Number, default: 0 },
+//   votes: { type: Number, default: 0 }
+// }, { versionKey: false, timestamps: true });
 
 // instructorSchema.pre('save', async function (next) {
-//   if (!this.isModified('password')) return next();
+//   if (!this.isModified('mentorpassword')) return next();
 
 //   try {
 //     const salt = await bcrypt.genSalt(10);
-//     this.password = await bcrypt.hash(this.password, salt);
+//     this.mentorpassword = await bcrypt.hash(this.mentorpassword, salt);
 //     next();
 //   } catch (error) {
 //     return next(error);
@@ -46,7 +44,7 @@
 
 // instructorSchema.methods.comparePassword = async function (candidatePassword) {
 //   try {
-//     return await bcrypt.compare(candidatePassword, this.password);
+//     return await bcrypt.compare(candidatePassword, this.mentorpassword);
 //   } catch (error) {
 //     throw new Error(error);
 //   }
@@ -57,16 +55,15 @@
 
 
 
-
-
-
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const Schema = mongoose.Schema;
 
 const instructorSchema = new Schema({
-  
-  mentorName: { type: String },
+  firstName: { type: String },
+  lastName: { type: String },
+  email: { type: String },
+  password: { type: String },
   technologyName: { type: String },
   ratings: { type: Number, default: 0 },
   location: { type: String },
@@ -96,6 +93,7 @@ instructorSchema.pre('save', async function (next) {
     return next(error);
   }
 });
+
 
 instructorSchema.methods.comparePassword = async function (candidatePassword) {
   try {
