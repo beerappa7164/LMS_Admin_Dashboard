@@ -18,18 +18,21 @@ class BaseRepository {
         return data;
     }
 
-    async update(model) {
+    // async update(model) 
+    // {
+    //     var options = { new: true };
+    //     var data = await this.collection.findOneAndUpdate(model._id, model, options);
+    //     return data;
+    // }
+
+    async update(id, model) {
         var options = { new: true };
-        var data = await this.collection.findOneAndUpdate(model._id, model, options);
+        var data = await this.collection.findOneAndUpdate({ _id: id }, model, options);
         return data;
     }
+    
 
-    async  updateparticular(model) {
-        var options = { new: true };
-        var data = await this.collection.findByIdAndUpdate(model._id, model, options);
-        return data;
-    }
-
+    
 
 
     async updatePassword(id, newPassword) {

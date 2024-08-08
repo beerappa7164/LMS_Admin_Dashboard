@@ -9,7 +9,7 @@ router.post('/add',InstructorController.add);
 router.get('/getbyemail/:email', InstructorController.getByEmail);
 router.get('/getbyusername/:userName',InstructorController.getByUserName)
 router.put('/update/:id', InstructorController.update);
-router.put('/updateparticular/:id', InstructorController.updateparticular);
+
 
 router.delete('/deletebyid/:id', InstructorController.deleteById);
 

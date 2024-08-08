@@ -94,6 +94,19 @@ instructorSchema.pre('save', async function (next) {
   }
 });
 
+instructorSchema.pre('findOneAndUpdate', async function(next) {
+  const update = this.getUpdate();
+  if (update.password) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      update.password = await bcrypt.hash(update.password, salt);
+    } catch (err) {
+      return next(err);
+    }
+  }
+  next();
+});
+
 
 instructorSchema.methods.comparePassword = async function (candidatePassword) {
   try {
