@@ -8,7 +8,7 @@ const InstructorLog = require('../model/instructorlog.model');
 
 // Route for registering a new student
 router.post('/register', async (req, res) => {
-    const { firstName, lastName, email, password, phoneNo, adress } = req.body;
+    const { firstName, lastName, email, password, phoneNo,  } = req.body;
     
     const newInstructorLog = new InstructorLog({
         firstName,
@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
         email,
         password,
         phoneNo,
-        adress
+        
     });
 
     try {

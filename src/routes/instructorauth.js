@@ -2,54 +2,21 @@
 
 
 
-// const express = require('express');
-// const router = express.Router();
-// // const InstructorLog = require('../model/instructorlog.model');
-// const Instructor = require('../model/instructor.model')
-
-// router.post('/login', async (req, res) => {
-//   const { mentoremail, mentorpassword } = req.body;
-
-//   try {
-//     const instructor = await Instructor.findOne({ mentoremail }).exec();
-//     if (!instructor) { // Corrected the check here
-//       return res.status(401).json({ message: 'Invalid email or password' });
-//     }
-
-//     const isPasswordValid = await instructor.comparePassword(mentorpassword); // Call the instance method
-//     if (!isPasswordValid) {
-//       return res.status(401).json({ message: 'Invalid email or password' });
-//     }
-
-//     res.json({ message: 'Login successful', instructor });
-//   } catch (error) {
-//     console.error('Login failed:', error);
-//     res.status(500).json({ message: 'Server error' });
-//   }
-// });
-
-// module.exports = router;
-
-
-
-
-
-
-
 const express = require('express');
 const router = express.Router();
-const Instructor = require('../model/instructor.model');
+const InstructorLog = require('../model/instructorlog.model');
+
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const instructor = await Instructor.findOne({ email }).exec();
-    if (!instructor) {
+    const instructor = await InstructorLog.findOne({ email }).exec();
+    if (!instructor) { // Corrected the check here
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const isPasswordValid = await instructor.comparePassword(password);
+    const isPasswordValid = await instructor.comparePassword(password); // Call the instance method
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -62,6 +29,42 @@ router.post('/login', async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+// const express = require('express');
+// const router = express.Router();
+// const Instructor = require('../model/instructor.model');
+
+// router.post('/login', async (req, res) => {
+//   const { email, password } = req.body;
+
+//   try {
+//     const instructor = await Instructor.findOne({ email }).exec();
+//     if (!instructor) {
+//       return res.status(401).json({ message: 'Invalid email or password' });
+//     }
+
+//     const isPasswordValid = await instructor.comparePassword(password);
+//     if (!isPasswordValid) {
+//       return res.status(401).json({ message: 'Invalid email or password' });
+//     }
+
+//     res.json({ message: 'Login successful', instructor });
+//   } catch (error) {
+//     console.error('Login failed:', error);
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// });
+
+// module.exports = router;
 
 
 

@@ -11,11 +11,14 @@ const studentSchema = new Schema({
   lastName: { type: String,  minlength: 4 },
   email: { type: String,  unique: true, lowercase: true },
   password: { type: String,  minlength: 8 },
-  originalPassword: { type: String }, // Field to store original password (not recommended for production)
-  phoneNo: { type: String, minlength: 10,  },
-  adress: { type: String },
+  
+  phoneNo: { type: String, minlength: 10},
+  location: { type: String },
+  photoUrl: { type: String,default:'https://res.cloudinary.com/di8docqfs/image/upload/v1724652624/orman_a893tq.jpg'},
   role: { type: String, default: 'student' },
-  avatar: { type: String, default: 'avatar.webp' },
+  aboutMe: { type: String, default: 'null' },
+  education: { type: String, default: 'null'},
+  
   enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
 }, { versionKey: false, timestamps: true });
 

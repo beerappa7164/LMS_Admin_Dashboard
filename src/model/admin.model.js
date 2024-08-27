@@ -1,24 +1,3 @@
-// const mongoose=require('mongoose')
-
-// const Schema=mongoose.Schema;
-
-// const adminSchema=new Schema({
-//     firstname:{type:String,required:true,minlength:4},
-//     lastName:{type:String,required:true,minlength:4},
-//     userName:{type:String,required:true,unique:true,lowercase:true,minlength:4},
-//     email:{type:String,required:true,unique:true,lowercase:true},
-//     password:{type:String,required:true,minlength:8,maxlength:20},
-//     phone:{type:Number,required:true,unique:true,minlength:10,maxlength:12},
-//     address:{type:String,required:true},
-//     role:{type:String,required:true,default:'admin'},
-//     avatar:{type:String,required:true,default:'avatar.webp'}
-// },{
-//     versionKey:false,
-//     timestamps:true,
-// });
-
-// const admin=mongoose.model('admin',adminSchema);
-// module.exports=admin;
 
 
 
@@ -29,13 +8,17 @@ const Schema=mongoose.Schema;
 const adminSchema=new Schema({
     firstName:{type:String,required:true,minlength:4},
     lastName:{type:String,required:true,minlength:4},
-    // userName:{type:String,required:true,unique:true,lowercase:true,minlength:4},
+    
     email:{type:String,required:true,unique:true,lowercase:true},
     password:{type:String,required:true,minlength:8,maxlength:20},
-    phone:{type:Number,unique:true,minlength:10,maxlength:12},
-    address:{type:String},
+    phoneNo: { type: String, minlength: 10},
+    location: { type: String,default:'null' },
+    photoUrl: { type: String,default:'https://res.cloudinary.com/di8docqfs/image/upload/v1724652624/orman_a893tq.jpg'},
+  
+    aboutMe: { type: String, default: 'null' },
+    education: { type: String, default: 'null'},
     role:{type:String,default:'admin'},
-    avatar:{type:String,default:'avatar.webp'}
+    
 },{
     versionKey:false,
     timestamps:true,
@@ -52,6 +35,19 @@ adminSchema.pre('save', async function (next) {
     } catch (error) {
       return next(error);
     }
+  });
+
+  adminSchema.pre('findOneAndUpdate', async function(next) {
+    const update = this.getUpdate();
+    if (update.password) {
+      try {
+        const salt = await bcrypt.genSalt(10);
+        update.password = await bcrypt.hash(update.password, salt);
+      } catch (err) {
+        return next(err);
+      }
+    }
+    next();
   });
 
   adminSchema.methods.comparePassword = async function (candidatePassword) {
