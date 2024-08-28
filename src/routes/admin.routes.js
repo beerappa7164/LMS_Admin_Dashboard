@@ -10,5 +10,6 @@ router.get('/getbyemail/:email', AdminController.getByEmail);
 router.get('/getbyusername/:userName',AdminController.getByUserName)
 router.put('/update/:id', AdminController.update);
 router.delete('/deletebyid/:id', AdminController.deleteById);
+router.put('/update-photo/:id', AdminController.updatePhoto);
 
 module.exports = router;

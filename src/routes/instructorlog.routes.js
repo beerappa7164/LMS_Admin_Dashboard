@@ -11,6 +11,7 @@ router.get('/getbyemail/:email', InstructorLogController.getByEmail);
 router.put('/update/:id', InstructorLogController.update);
 // router.put('/update-password/:id', StudentController.updatePassword);
 router.delete('/deletebyid/:id', InstructorLogController.deleteById);
+router.put('/update-photo/:id', InstructorLogController.updatePhoto);
 
 
 

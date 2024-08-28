@@ -36,73 +36,112 @@ class StudentController extends BaseController {
         super(StudentRepository);
     }
 
-    add = (req, res) => {
-        upload(req, res, async (err) => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
+    // add = (req, res) => {
+    //     upload(req, res, async (err) => {
+    //         if (err) {
+    //             return res.status(500).json({ error: err.message });
+    //         }
 
-            console.log('Request Body:', req.body);
-            const {
-                firstName,
-                lastName,
-                email,
-                password,
-                phoneNo,
-                location,
-                role,
-                enrolledCourses,
+    //         console.log('Request Body:', req.body);
+    //         const {
+    //             firstName,
+    //             lastName,
+    //             email,
+    //             password,
+    //             phoneNo,
+    //             location,
+    //             role,
+    //             enrolledCourses,
                
-            } = req.body;
+    //         } = req.body;
 
-            let photoUrl = '';
-            if (req.file) {
-                try {
-                    const result = await new Promise((resolve, reject) => {
-                        const uploadStream = cloudinary.uploader.upload_stream({
-                            public_id: uuidv4(),
-                            resource_type: 'auto' 
-                        }, (error, result) => {
-                            if (error) {
-                                reject(error);
-                            } else {
-                                resolve(result);
-                            }
-                        });
-                        streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
-                    });
+    //         let photoUrl = '';
+    //         if (req.file) {
+    //             try {
+    //                 const result = await new Promise((resolve, reject) => {
+    //                     const uploadStream = cloudinary.uploader.upload_stream({
+    //                         public_id: uuidv4(),
+    //                         resource_type: 'auto' 
+    //                     }, (error, result) => {
+    //                         if (error) {
+    //                             reject(error);
+    //                         } else {
+    //                             resolve(result);
+    //                         }
+    //                     });
+    //                     streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+    //                 });
 
-                    photoUrl = result.secure_url;
-                    console.log('Uploaded photo URL:', photoUrl);
-                } catch (uploadError) {
-                    return res.status(500).json({ error: uploadError.message });
-                }
-            }
+    //                 photoUrl = result.secure_url;
+    //                 console.log('Uploaded photo URL:', photoUrl);
+    //             } catch (uploadError) {
+    //                 return res.status(500).json({ error: uploadError.message });
+    //             }
+    //         }
 
            
 
             
 
-            try {
-                const newInstructor = await this.repo.create({
-                  firstName,
-                  lastName,
-                   email,
-                    password,
+    //         try {
+    //             const newInstructor = await this.repo.create({
+    //               firstName,
+    //               lastName,
+    //                email,
+    //                 password,
                    
-                    photoUrl,
-                    location,
-                    role,
-                    phoneNo,
-                    enrolledCourses,
+    //                 photoUrl,
+    //                 location,
+    //                 role,
+    //                 phoneNo,
+    //                 enrolledCourses,
                     
-                });
-                res.status(201).json(newInstructor);
-            } catch (error) {
-                res.status(500).json({ error: error.message });
-            }
+    //             });
+    //             res.status(201).json(newInstructor);
+    //         } catch (error) {
+    //             res.status(500).json({ error: error.message });
+    //         }
+    //     });
+    // }
+    updatePhoto = (req, res) => {
+        upload(req, res, async (err) => {
+          if (err) {
+            return res.status(500).json({ error: err.message });
+          }
+    
+          if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+          }
+    
+          try {
+            const result = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                  public_id: uuidv4(),
+                  resource_type: 'auto',
+                },
+                (error, result) => {
+                  if (error) {
+                    reject(error);
+                  } else {
+                    resolve(result);
+                  }
+                }
+              );
+              streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+            });
+    
+            const photoUrl = result.secure_url;
+    
+            // Update photo URL in the admin profile
+            const updatedStudent = await this.repo.update(req.params.id, { photoUrl });
+    
+            res.status(200).json(updatedStudent);
+          } catch (uploadError) {
+            return res.status(500).json({ error: uploadError.message });
+          }
         });
-    }
+      };
 }
 
 module.exports = new StudentController();

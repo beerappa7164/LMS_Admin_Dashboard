@@ -12,6 +12,8 @@ router.put('/update/:id', StudentController.update);
 // router.put('/update-password/:id', StudentController.updatePassword);
 router.delete('/deletebyid/:id', StudentController.deleteById);
 router.put('/update-password/:id', StudentController.updatePassword);
+router.put('/update-photo/:id', StudentController.updatePhoto);
+
 
 
 

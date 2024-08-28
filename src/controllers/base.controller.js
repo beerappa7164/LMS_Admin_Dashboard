@@ -59,17 +59,7 @@ class BaseController {
         });
     }
 
-    // update = (req, res) => {
-    //     let id = req.params.id;
-    //     const body = req.body;
-    //     this.repo.update(body).then(data => {
-    //         return this.ok(res, data);
-    //     }).catch(err => {
-    //         console.error(err);
-    //         return this.internalServerError(res, err);
-    //     });
-    // }
-
+    
 
     update = (req, res) => {
         let id = req.params.id;

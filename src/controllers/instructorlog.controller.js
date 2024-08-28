@@ -40,99 +40,140 @@ class InstructorLogController extends BaseController {
         super(InstructorLogRepository);
     }
 
-    add = (req, res) => {
-        upload(req, res, async (err) => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
+    // add = (req, res) => {
+    //     upload(req, res, async (err) => {
+    //         if (err) {
+    //             return res.status(500).json({ error: err.message });
+    //         }
 
-            console.log('Request Body:', req.body);
-            const {
-                firstName,
-                lastName,
-                email,
-                password,
-                votes,
+    //         console.log('Request Body:', req.body);
+    //         const {
+    //             firstName,
+    //             lastName,
+    //             email,
+    //             password,
+    //             votes,
                 
-                price,
+    //             price,
                
-                technologyName,
-                ratings,
-                location,
-                aboutMe,
-                timings, 
-                experience,
-                education,
-            } = req.body;
+    //             technologyName,
+    //             ratings,
+    //             location,
+    //             aboutMe,
+    //             timings, 
+    //             experience,
+    //             education,
+    //         } = req.body;
 
-            let photoUrl = '';
-            if (req.file) {
-                try {
-                    const result = await new Promise((resolve, reject) => {
-                        const uploadStream = cloudinary.uploader.upload_stream({
-                            public_id: uuidv4(),
-                            resource_type: 'auto' 
-                        }, (error, result) => {
-                            if (error) {
-                                reject(error);
-                            } else {
-                                resolve(result);
-                            }
-                        });
-                        streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
-                    });
+    //         let photoUrl = '';
+    //         if (req.file) {
+    //             try {
+    //                 const result = await new Promise((resolve, reject) => {
+    //                     const uploadStream = cloudinary.uploader.upload_stream({
+    //                         public_id: uuidv4(),
+    //                         resource_type: 'auto' 
+    //                     }, (error, result) => {
+    //                         if (error) {
+    //                             reject(error);
+    //                         } else {
+    //                             resolve(result);
+    //                         }
+    //                     });
+    //                     streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+    //                 });
 
-                    photoUrl = result.secure_url;
-                    console.log('Uploaded photo URL:', photoUrl);
-                } catch (uploadError) {
-                    return res.status(500).json({ error: uploadError.message });
-                }
-            }
+    //                 photoUrl = result.secure_url;
+    //                 console.log('Uploaded photo URL:', photoUrl);
+    //             } catch (uploadError) {
+    //                 return res.status(500).json({ error: uploadError.message });
+    //             }
+    //         }
 
-            const formattedTimings = {
-                Monday: [],
-                Tuesday: [],
-                Wednesday: [],
-                Thursday: [],
-                Friday: [],
-                Saturday: [],
-                Sunday: []
-            };
+    //         const formattedTimings = {
+    //             Monday: [],
+    //             Tuesday: [],
+    //             Wednesday: [],
+    //             Thursday: [],
+    //             Friday: [],
+    //             Saturday: [],
+    //             Sunday: []
+    //         };
 
-            if (timings) {
-                Object.keys(timings).forEach(day => {
-                    if (formattedTimings[day] !== undefined) {
-                        formattedTimings[day] = timings[day][0].split(',').map(time => time.trim());
-                    }
-                });
-            }
+    //         if (timings) {
+    //             Object.keys(timings).forEach(day => {
+    //                 if (formattedTimings[day] !== undefined) {
+    //                     formattedTimings[day] = timings[day][0].split(',').map(time => time.trim());
+    //                 }
+    //             });
+    //         }
 
-            console.log('Formatted Timings:', formattedTimings);
+    //         console.log('Formatted Timings:', formattedTimings);
 
-            try {
-                const newInstructor = await this.repo.create({
-                  firstName,
-                  lastName,
-                   email,
-                    password,
-                    votes,
-                    price,
+    //         try {
+    //             const newInstructor = await this.repo.create({
+    //               firstName,
+    //               lastName,
+    //                email,
+    //                 password,
+    //                 votes,
+    //                 price,
                     
-                    technologyName,
-                    ratings,
-                    photoUrl,
-                    location,
-                    aboutMe,
-                    experience,
-                    education,
-                    timings: formattedTimings,
-                });
-                res.status(201).json(newInstructor);
-            } catch (error) {
-                res.status(500).json({ error: error.message });
-            }
+    //                 technologyName,
+    //                 ratings,
+    //                 photoUrl,
+    //                 location,
+    //                 aboutMe,
+    //                 experience,
+    //                 education,
+    //                 timings: formattedTimings,
+    //             });
+    //             res.status(201).json(newInstructor);
+    //         } catch (error) {
+    //             res.status(500).json({ error: error.message });
+    //         }
+    //     });
+    // }
+
+
+    updatePhoto = (req, res) => {
+        upload(req, res, async (err) => {
+          if (err) {
+            return res.status(500).json({ error: err.message });
+          }
+    
+          if (!req.file) {
+            return res.status(400).json({ error: 'No file uploaded' });
+          }
+    
+          try {
+            const result = await new Promise((resolve, reject) => {
+              const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                  public_id: uuidv4(),
+                  resource_type: 'auto',
+                },
+                (error, result) => {
+                  if (error) {
+                    reject(error);
+                  } else {
+                    resolve(result);
+                  }
+                }
+              );
+              streamifier.createReadStream(req.file.buffer).pipe(uploadStream);
+            });
+    
+            const photoUrl = result.secure_url;
+    
+            // Update photo URL in the admin profile
+            const updatedInstructorlog = await this.repo.update(req.params.id, { photoUrl });
+    
+            res.status(200).json(updatedInstructorlog);
+          } catch (uploadError) {
+            return res.status(500).json({ error: uploadError.message });
+          }
         });
-    }
+      };
 }
 
 module.exports = new InstructorLogController();
