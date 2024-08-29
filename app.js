@@ -51,6 +51,9 @@ app.use(cors({ origin: process.env.CORS_ORIGIN }));
 const apiRoutes = require('./src/routes/api.routes');
 app.use(express.json());
 
+
+
+
 // Your existing routes and middleware this is for student login
 const authRoutes = require('./src/routes/auth');
 app.use('/api/auth', authRoutes);
